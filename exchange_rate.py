@@ -16,21 +16,19 @@ def get_best_exchange_rate(currency_code, num_branches):
 		name_ard = str(all_values[value].find("a", class_='font-bold').text)
 		if value == 0:
 
-			price = float(all_values[value].find_all('div')[6]["data-currencies-rate-sell"])
+			price = float(all_values[value].find_all('div')[4]["data-currencies-rate-buy"])
 
 		else:
 			divs = all_values[value].find_all('div')
 			for tags in divs:
 				try:
-					price = float(tags["data-currencies-rate-sell"])
+					price = float(tags["data-currencies-rate-buy"])
 					if len(price) > 3:
 						price = float(str(price[:5]))
 				except:
 					continue
 		container = (name, name_ard, price)
 		data.append(container)
+	sorted_data = sorted(data, key=lambda tup: tup[2])
 		
-	return data[:num_branches]
-
-print(get_best_exchange_rate("usd", 3))
-
+	return sorted_data[:num_branches]
